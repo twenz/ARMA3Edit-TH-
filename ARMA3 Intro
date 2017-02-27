@@ -1,0 +1,107 @@
+/*
+-------STATIC TEXTS (only fade in and out, no movement)
+*/
+	//Simple text, one line, middle of the screen;
+titletext ["MISSION NAME    By: Author name","plain"];
+
+	//Simple text, two lines, middle of the screen;
+titletext ["MISSION NAME    By: Author name \n Date: HH:MM","plain"];
+
+	//Simple text, two lines, bottom of the screen;
+titletext ["MISSION NAME    By: Author name \n Date: HH:MM","plain down"];
+
+	//Titletext with a variable containing structured text;
+a = format ["Mission name, By: Author name \n %1 : %2",str (date select 3),str (date select 4)];
+titletext  [a,"plain"];
+
+
+/*
+--------------ANIMATED TEXTS (use predefined functions to animate the letters)
+*/
+
+	//Individual letters appear quickly in random order, then disappear. Bottom right corner.
+any= ["Mission name" ,
+"By: Author name" ,
+ "Date"
+] spawn BIS_fnc_infoText;
+
+
+	//Letters appear gradually, upper part of the screen, middle;
+any=[
+	[
+		["Mission name","<t align = 'center' size = '0.7'>%1</t><br/>"],
+		["Author name","<t align = 'center' size = '0.7'>%1</t><br/>"],
+		["Date","<t align = 'center' size = '0.7'>%1</t>"]
+
+	]
+] spawn BIS_fnc_typeText;
+
+	//Letters appear gradually, upper right corner of the screen, few effects added;
+        // changed font, size and color
+any =
+[
+	[
+		["Mission name","align = 'center' size = '0.7' font='PuristaBold'"],
+		["","<br/>"],
+		["Author name","align = 'center' size = '0.8'","#aaaaaa"],
+		["","<br/>"],
+		["Date","align = 'center' size = '0.7'"]
+	]
+]
+spawn BIS_fnc_typeText2;
+
+
+	//InfoText again with variables in the third line;
+// takes hours and minutes from the date command (in-game date, format YYYY:MM:DD:HH:MM) and displays them
+any= ["Mission name" ,
+"By: Author name" ,
+ str (date select 3) + ":" + str (date select 4)]
+spawn BIS_fnc_infoText;
+
+
+	//TypeText again with variables in the third line;
+        //Same variation as above, only with different function.
+any=[
+	[
+		["Mission name","<t align = 'center' size = '0.7'>%1</t><br/>"],
+		["Author name","<t align = 'center' size = '0.7'>%1</t><br/>"],
+		[str (date select 3) + ":" + str (date select 4),"<t align = 'center' size = '0.7'>%1</t>"]
+
+	]
+] spawn BIS_fnc_typeText;
+
+
+	//TypeText2 again with variables in the third line;
+any =
+[
+	[
+		["Mission name","align = 'center' size = '0.7' font='PuristaBold'"],
+		["","<br/>"],
+		["Author name","align = 'center' size = '0.7'","#aaaaaa"],
+		["","<br/>"],
+		[str (date select 3) + ":" + str (date select 4),"align = 'center' size = '0.7'"]
+	]
+]
+ spawn BIS_fnc_typeText2;
+
+
+
+/*
+Additional info:
+To pass to a new line, use the following:
+TitleText - \n
+InfoText - a new parameter ( ["blabla","new line","third line"] )
+TypeText - ["text","<t>%1</t> <br/>"], the <br/> indicates that the next text will be on another line
+TypeText - ["","<br/>"],
+
+To combine a fixed text with variables, you can use + if you are writing a structured text.
+A structured text is used in animated text variants and functions.
+str (date select 3) + ":" + str (date select 4)
+date select 3 = 6, date select 4 = 35
+str 6 = 6, str 35 = 35
+So now we have a text "6", a text ":" and "35"
+final result 6:35
+
+TitleText or CutText don't support structured text as a part of the command. You can see in the advanced TitleText examples that I did the text formatting before using the command itself, that way I used structured text, saved it into a variable
+and only then used it in the command.
+*/
